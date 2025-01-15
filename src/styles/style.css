@@ -1,0 +1,79 @@
+html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+    user-select: none;
+  }
+  body {
+      margin: 0;
+  }
+  /* Licensed under a BSD license. See ../license.html for license */
+
+html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+    user-select: none;
+  }
+  
+  body {
+    background-color: #aaa;
+    font-family: Sans-Serif;
+  }
+  
+  canvas {
+    background-color: #fff;
+    border: 1px solid black;
+    /* NOTE: This size is changed if in iframe - see below '.iframe canvas' */
+    width: 400px;
+    height: 300px;
+    display: block;
+  }  
+  
+  /* styles to apply if in an iframe */
+  
+  html.iframe {
+      height: 100vh;
+  }
+  body.iframe {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .iframe>.description {
+    display: none;
+  }
+  .iframe .divcanvas {
+    width: 100vw;
+    height: 100vh;
+  }
+  .iframe canvas {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    border: none;
+  }
+  
+  .iframe>#example {
+    width: 100%;
+    height: 100%;
+  }
+  #ui #rotation>canvas {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+  #ui {
+      width: 200px;
+  }
+  
+  @media (max-width: 390px) {
+    pre {
+      font-size: xx-small !important;
+      max-width: 300px !important;
+    }
+    canvas {
+      width: 100vw;
+    }
+  }

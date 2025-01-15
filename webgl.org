@@ -1,0 +1,167 @@
+* WEBGL
+** WebGL Fundamentals
+*** You need to provide code that runs on the GPU
+    + To accomplish this you need to provide two functions
+      + Vertex shader and fragment shader both written in GLSL which is a strict subset of Cpp. Paired together they are called a "program"
+*** Vertex Shader
+    + Its job is to compute vertex positions
+    + Based on these positions this fn outputs webgl that can then rasterize various primitives including:
+      + Points, lines, or triangles
+    + When rasterizing these, it calls the fragment shader
+*** Fragment Shader
+    + The job of the fragment shader computes a color for each pixel of the current primitive being drawn
+*** WebGL Api
+    + Mostly about setting up state - [[https://webglfundamentals.org/webgl/lessons/resources/webgl-state-diagram.html][WebGLFundamentals WebGL State Diagram]]
+      + This will be a super useful resource!
+    + For each thing you want to draw, you set state and then execute the function pair by calling
+      *gl.drawArrays* or *gl.drawElements*. These execute your shaders on the GPU.
+
+*** Providing data to Fragment and Vertex Shaders
+**** Buffers
+     + Buffers are arrays of binary data, they usually contain things like positions, normals, texture coordinates, vertex colors etc. But you may place anything you want in them
+**** Attributes
+     + Attributes specify how to pull data out of your buffers and provide them to the vertex shader
+       For example, you might put positions in a buffer as three 32 bit floats per position.
+       You then tell the attribute which buffer to retrieve them from and what type it should pull out.
+       Basically, this is a parser for the encoding of the buffer
+       For instance, this vec4 describing a position will have 4 components to be retrieved from the buffer:
+       #+begin_src glsl
+         attribute vec4 a_position;
+       #+end_src
+
+       N.B Buffers are *NOT* random access. The vertex shader is executed a specific number of times and pulls the next value according to how you've defined it to be parsed.
+**** Uniforms
+     + These are global variables you set before you execute the shader program
+**** Textures
+     + Textures are arrays of data you *can* randomly access in your shader program.
+       Most commonly they hold image data, but they are just data.
+**** Varyings
+     + A way for the vertex shader to pass data to a fragment shader.
+*** Hello World!
+    + WebGL cares only about clip space coordinates and colors. We provide shader programs to handle this.
+      Vertex shaders provide the clip space coordinates and fragment shaders provide the color.
+**** Clip Space coordinates
+     + Always go from -1 to +1 no matter what size your canvas is
+       #+attr_html: :width 300px
+       [[file:WEBGL/2024-11-05_14-58-42_screenshot.png]]
+
+**** Simple WebGL Program
+***** Vertex Shader
+      #+begin_src glsl
+    // an attribute will receive data from a buffer
+    attribute vec4 a_position;
+    // all shaders have a main function
+    void main() {
+      // gl_Position is a special variable a vertex shader
+      // is responsible for setting
+      gl_Position = a_position;
+    }
+      #+end_src
+      Same code if it were in javascript:
+        N.B. In real life its not as simple bc *positionBuffer* is binary data
+        (e.g. we have already encoded numbers in js!)
+      #+begin_src javascript
+        // *** PSEUDO CODE!! ***
+        var positionBuffer = [
+          0, 0, 0, 0,
+          0, 0.5, 0, 0,
+          0.7, 0, 0, 0,
+        ];
+        var attributes = {};
+        var gl_Position;
+
+        drawArrays(..., offset, count) {
+          var stride = 4;
+          var size = 4;
+          for (var i = 0; i < count; ++i) {
+             // copy the next 4 values from positionBuffer to the a_position attribute
+             // Basically, slice off 4 values and pass it to the shader to be compiled/run
+             const start = offset + i * stride;
+             attributes.a_position = positionBuffer.slice(start, start + size);
+             runVertexShader();
+             ...
+             doSomethingWith_gl_Position();
+        }
+      #+end_src
+***** Fragment shader
+      #+begin_src glsl
+        // fragment shaders don't have a default precision so we need
+        // to pick one. mediump is a good default. It means "medium precision"
+        precision mediump float;
+
+        void main() {
+          // gl_FragColor is a special variable a fragment shader
+          // is responsible for setting
+          gl_FragColor = vec4(1, 0, 0.5, 1); // return reddish-purple
+        }
+      #+end_src
+***** Viewport woes
+****** When WebGL is bootstrapped, the viewport will be set to the current size of the canvas. Ofc this won't work for resizing the canvas.
+
+
+
+Ideas
+
+To Build
+Sequencer --> Shaders --> Livecodable (Finish Lisp-esque language interpreter) + Hardware interface if possible
+Get random inputs from live memory buffers program (with Mia! Yay)
+Finish some features of your "training mode" which require stretttttchhhhinnnng what you know and understand (this pairs with Reverse Engineering)
+Emacs Configsssss --> Workflows for note taking and publishing (what actually serves me, and is useful for my studying)
+A ML model which reads my nietzsche aphorisms
+
+To Study
+NO - Reverse Engineering (Assembly + Low Level programming) (M68000? or more general)
+YES - Linear Algebra + Multivariable Calculus (but probably 
+General Algorithm/Leetcode Practice
+DSP Book
+WebGL fundamentals
+Nature of code study group
+Book of Shaders
+C++ (A lot of things I like are this haha)
+
+
+Why?
+Sequencer: Because I am getting into video, and playing with physical devices.
+I chose the project very intentionally because it will hit a lot of my current goals
+Audio/Visual , Programming chops and also performance! I think programming can keep you walled off a lot of the time and so I want to build something thats easily understandable and fun for someone else. I also want to make it part of a live performance. I love patterns and think they are beautiful, a certain style of shader creation really caters to this
+
+Get random inputs project: Oh i really want to work with someone!
+
+Why emacs configs? Because even if i have failed over and over again with it, something about it is attractive (like my love life)
+
+The studies?
+All of these things play into things I have been interested in in the past and still think about completing/getting on a higher level. Some of these have current study groups
+Its been so long since I've studied a long side someone else and I want to learn what that is like again
+
+Finish features on training mode?
+I have a few friends who do this work a much higher aptitude and want to be able to help them out or at least be more understanding of their expertise!
+I think they would like it if more people understood what they are talking about haha. I'm also interested in the features myself of course.
+
+
+
+How to do it?
+2 Weeks Graphics (We're halfwayyyyyy)
+2 Weeks Sequencers
+2 weeks on Audio Processing
+
+I'm ok with the sequence being malleable!
+
+I hope to do half and half with studying and writing (Morning - Coding, During the day - linking with others, then studying/reading at night time)
+
+
+YES - Sequencer --> Shaders --> Livecodable (Finish Lisp-esque language interpreter) + Hardware interface if possible
+YES - Get random inputs from live memory buffers program (with Mia! Yay)
+NO - inish some features of your "training mode" which require stretttttchhhhinnnng what you know and understand (this pairs with Reverse Engineering)
+MAYBE - Emacs Configsssss --> Workflows for note taking and publishing (what actually serves me, and is useful for my studying)
+MAYBE - IF someone wants to pair I'll do it, this is probably about an afternoon project. A ML model which reads my nietzsche aphorisms
+
+To Study
+NO - Reverse Engineering (Assembly + Low Level programming) (M68000? or more general)
+YES - Linear Algebra + Multivariable Calculus (but probably 
+MAYBE (Doubtful, this generally doesn't bring me joy) General Algorithm/Leetcode Practice
+MAYBE (hopefully yes) DSP Book
+YES (already doing) WebGL fundamentals
+YES Nature of code study group
+YES Book of Shaders
+(Probably not) C++ (A lot of things I like are this haha)
+

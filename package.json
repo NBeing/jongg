@@ -1,0 +1,38 @@
+{
+  "name": "pong.gg",
+  "version": "1.0.0",
+  "description": "Pong.gg - Mostly an attempt at creating a 2d rendering engine",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "webpack build; nodemon ./src/serial_backend/index.js",
+    "start:frontend": "webpack serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "raw-loader": "^4.0.2",
+    "serialport": "^12.0.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/ws": "^8.5.13",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-ws": "^5.0.2",
+    "file-loader": "^6.2.0",
+    "gl-matrix": "^3.4.3",
+    "loglevel": "^1.9.2",
+    "nodemon": "^3.1.7",
+    "ws": "^8.18.0"
+  }
+}
